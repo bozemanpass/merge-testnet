@@ -22,23 +22,23 @@ ENR=`cat $DATADIR/bootnode/enr.dat`
 ENR_IP=`ip addr | grep 172 | awk '{print $2}' | cut -d '/' -f1`
 
 exec lighthouse \
-	--debug-level $DEBUG_LEVEL \
-	bn \
-	$SUBSCRIBE_ALL_SUBNETS \
+  --debug-level $DEBUG_LEVEL \
+  bn \
+  $SUBSCRIBE_ALL_SUBNETS \
   --boot-nodes "$ENR" \
-	--datadir $data_dir \
-	--testnet-dir $TESTNET_DIR \
-	--enable-private-discovery \
-	--staking \
+  --datadir $data_dir \
+  --testnet-dir $TESTNET_DIR \
+  --enable-private-discovery \
+  --staking \
   --enr-address $ENR_IP \
-	--enr-udp-port $network_port \
-	--enr-tcp-port $network_port \
-	--port $network_port \
+  --enr-udp-port $network_port \
+  --enr-tcp-port $network_port \
+  --port $network_port \
   --http-address 0.0.0.0 \
-	--http-port $http_port \
-	--disable-packet-filter \
+  --http-port $http_port \
+  --disable-packet-filter \
   --execution-endpoint $EXECUTION_ENDPOINT \
   --execution-jwt $JWTSECRET \
   --terminal-total-difficulty-override $ETH1_TTD \
   --suggested-fee-recipient $SUGGESTED_FEE_RECIPIENT \
-	--target-peers $((BN_COUNT - 1))
+  --target-peers $((BN_COUNT - 1))

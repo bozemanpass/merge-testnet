@@ -12,8 +12,8 @@ source ./vars.env
 NOW=${1:-`date +%s`}
 
 lcli \
-	change-genesis-time \
-	$TESTNET_DIR/genesis.ssz \
-	$NOW
+  change-genesis-time \
+  $TESTNET_DIR/genesis.ssz \
+  $NOW
 
 echo "Reset genesis time to now ($NOW)"

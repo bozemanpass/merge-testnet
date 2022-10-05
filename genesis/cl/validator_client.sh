@@ -21,13 +21,13 @@ while getopts "pd:" flag; do
 done
 
 exec lighthouse \
-	--debug-level $DEBUG_LEVEL \
-	vc \
-	$BUILDER_PROPOSALS \
+  --debug-level $DEBUG_LEVEL \
+  vc \
+  $BUILDER_PROPOSALS \
   --validators-dir $DATADIR/node_$NODE_NUMBER/validators \
   --secrets-dir $DATADIR/node_$NODE_NUMBER/secrets \
-	--testnet-dir $TESTNET_DIR \
-	--init-slashing-protection \
-	--beacon-nodes http://localhost:8001 \
+  --testnet-dir $TESTNET_DIR \
+  --init-slashing-protection \
+  --beacon-nodes http://localhost:8001 \
   --suggested-fee-recipient $SUGGESTED_FEE_RECIPIENT \
-	$VC_ARGS
+  $VC_ARGS
