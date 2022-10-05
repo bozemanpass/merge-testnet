@@ -14,7 +14,7 @@ When the testnet first starts, in needs to build its DAG.  This will take a coup
 
 One the DAG has completed, Lighthouse is started.  The Lighthouse testnet will quickly transition from `phase0` to `altair` to `bellatrix` states over a few minutes.  Additionally, the `bellatrix` state will have two distinct forms, pre-Merge and post-Merge.
 
-> Note: With the default settings, the transition to `altair` will occur at slot 32 and `bellatrix` slot 64.
+> With the default settings, the transition to `altair` will occur at slot 32 and `bellatrix` at slot 64.
 
 Once Lighthouse is running, you can easily check the current version by executing:
 
@@ -23,7 +23,7 @@ $ wget -O - -q 'http://localhost:5052/eth/v2/beacon/blocks/head' | jq '.version'
 "bellatrix"
 ```
 
-To check if your `bellatrix` network is in a pre- or post-Merge state, look at the contents of the `ExecutionPayload`.  The easiest item to check is the block number. As long as this is `0`, the testnet is pre-Merge.  If it is non-0, it is post-Merge.
+To check if your `bellatrix` network is in a pre- or post-Merge state, look at the contents of the `ExecutionPayload`.  The easiest item to check is the ETH1 block number. As long as this is `0`, the testnet is pre-Merge.  If it is non-0, it is post-Merge.
 
 ```
 # Pre-Merge
@@ -35,7 +35,7 @@ $ wget -O - -q 'http://localhost:5052/eth/v2/beacon/blocks/head' | jq '.data.mes
 "541"
 ```
 
-> Note:  With the default settings, you can expect the testnet to haved reached terminal total difficulty, triggering the Merge, somewhere around slot 100.
+> With the default settings, you can expect the testnet to haved reached terminal total difficulty, triggering the Merge, somewhere around slot 100.
 
 In the Lighthouse beacon node logs, the transition to proof-of-stake is marked with ASCII art, and is fairly easy to spot:
 
