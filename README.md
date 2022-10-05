@@ -61,3 +61,32 @@ In the Lighthouse beacon node logs, the transition to proof-of-stake is marked w
   .8'     `888. 888   .o8  888 . 888    `888'   d8(  888   888 .888    .o888   888
  o88o     o8888o`Y8bod8P'  "888"o888o    `8'    `Y888""8o  "888"`Y8bod8P'`Y8bod88P"
 ````
+
+## Accounts
+There are several prefunded accounts:
+
+```
+$ wget -O - -q --method POST --header 'Content-Type: application/json' --body-data '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "eth_accounts",
+    "params": []
+}' 'localhost:8545' | jq
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": [
+    "0xe6ce22afe802caf5ff7d3845cec8c736ecc8d61f",
+    "0xe22ad83a0de117ba0d03d5e94eb4e0d80a69c62a",
+    "0xf1ac8dd1f6d6f5c0da99097c57ebf50cd99ce293",
+    "0x9d2edb2b30bce41375179571944a3f92636ce1cd",
+    "0x5d81e609c15e292bb8255bd9b1b2494dc0386062",
+    "0x5929ad4a1d6b899065acf2a66d5eb086a2863bee"
+  ]
+}
+```
+
+The accounts are automatically imported into the `geth` wallet on each node locked with the `ACCOUNT_PASSWORD` specified in `docker.env` (default: `secret1212`).
+
+Full account details are in the `genesis/accounts` directory.
