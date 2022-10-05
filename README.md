@@ -12,7 +12,7 @@ $ docker-compose up --build -d
 
 When the testnet first starts, in needs to build its DAG.  This will take a couple of minutes, and its progress can be observed in the logs of a `geth` "miner" node.
 
-One the DAG has completed, Lighthouse is started.  The Lighthouse testnet will quickly transition from `phase0` to `altair` to `bellatrix` states over a few minutes.  Additionally, the `bellatrix` state will have two distinct forms, pre-Merge and post-Merge.
+After the DAG has been built, Lighthouse is started.  The Lighthouse testnet will quickly transition versions from `phase0` to `altair` to `bellatrix` over the course of a few minutes.  Additionally, the `bellatrix` state will have two distinct states: pre-Merge and post-Merge.
 
 > With the default settings, the transition to `altair` will occur at slot 32 and `bellatrix` at slot 64.
 
@@ -23,7 +23,7 @@ $ wget -O - -q 'http://localhost:5052/eth/v2/beacon/blocks/head' | jq '.version'
 "bellatrix"
 ```
 
-To check if your `bellatrix` network is in a pre- or post-Merge state, look at the contents of the `ExecutionPayload`.  The easiest item to check is the ETH1 block number. As long as this is `0`, the testnet is pre-Merge.  If it is non-0, it is post-Merge.
+To check if your `bellatrix` network is in the pre- or post-Merge state, look at the contents of the `ExecutionPayload` in the latest block.  The simplest member to check is the ETH1 block number. As long as this is `0`, the testnet is pre-Merge.  If the value is non-0, it is post-Merge.
 
 ```
 # Pre-Merge
@@ -35,9 +35,9 @@ $ wget -O - -q 'http://localhost:5052/eth/v2/beacon/blocks/head' | jq '.data.mes
 "541"
 ```
 
-> With the default settings, you can expect the testnet to haved reached terminal total difficulty, triggering the Merge, somewhere around slot 100.
+> With the default settings, the testnet will reach terminal total difficulty, triggering the Merge, somewhere around the time of slot 100.
 
-In the Lighthouse beacon node logs, the transition to proof-of-stake is marked with ASCII art, and is fairly easy to spot:
+In the logs, the transition to proof-of-stake is marked with ASCII art, and is fairly easy to spot:
 
 ```
     ,,,         ,,,                                               ,,,         ,,,
