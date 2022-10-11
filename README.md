@@ -5,7 +5,8 @@
 To start the testnet, use `docker-compose`.  By default, this will start one bootnode and two "miner" nodes.  Each node is running both `geth` and `lighthouse`.
 
 ```
-$ docker-compose up --build -d
+$ docker compose build
+$ docker compose up -d
 ```
 
 ## Status
