@@ -1,7 +1,7 @@
 FROM sigp/lcli AS lcli
 FROM skylenet/ethereum-genesis-generator AS ethgen
 
-FROM cerc/lighthouse:local
+FROM sigp/lighthouse
 # sigp/lighthouse is based on Ubuntu
 RUN apt-get update && apt-get -y upgrade && apt-get install -y --no-install-recommends \
   libssl-dev ca-certificates \
