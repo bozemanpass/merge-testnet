@@ -1,58 +1,86 @@
 version: '3.7'
 
 services:
-  bootnode:
-    hostname: bootnode
+  bootnode-el:
+    hostname: bootnode-el
     env_file:
       - docker.env
     environment:
       RUN_BOOTNODE: "true"
-    image: merge-client
+    image: merge-el
     build:
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.el
       context: .
     networks:
       priv-eth-net:
         ipv4_address: 172.16.254.10
 
-  miner-1:
-    hostname: miner-1
+  el-1:
+    hostname: el-1
+    env_file:
+      - docker.env
+    image: merge-el
+    depends_on:
+      - bootnode-el
+    ports:
+      - "8545"
+    networks:
+      priv-eth-net:
+
+  el-2:
+    hostname: el-2
+    env_file:
+      - docker.env
+    image: merge-el
+    depends_on:
+      - bootnode-el
+    networks:
+      priv-eth-net:
+
+  bootnode-cl:
+    hostname: bootnode-cl
+    env_file:
+      - docker.env
+    environment:
+      RUN_BOOTNODE: "true"
+    image: merge-cl
+    build:
+      dockerfile: Dockerfile.cl
+      context: .
+    networks:
+      priv-eth-net:
+        ipv4_address: 172.16.254.11
+
+  cl-1:
+    hostname: cl-1
     env_file:
       - docker.env
     environment:
       NODE_NUMBER: "1"
-      RUN_GETH: "true"
-      RUN_LIGHTHOUSE: "true"
-      ETH1_ENDPOINT: "http://localhost:8545"
-      EXECUTION_ENDPOINT: "http://localhost:8551"
-    image: merge-client
+      ETH1_ENDPOINT: "http://el-1:8545"
+      EXECUTION_ENDPOINT: "http://el-1:8551"
+    image: merge-cl
     depends_on:
-      - bootnode    
+      - bootnode-cl
+      - el-1
     ports:
-      - "5052:8001"
-      - "8545:8545"
-      - "8551:8551"
+      - "8001"
     networks:
       priv-eth-net:
-
-  miner-2:
-    hostname: miner-2
+  
+  cl-2:
+    hostname: cl-2
     env_file:
       - docker.env
     environment:
       NODE_NUMBER: "2"
-      RUN_GETH: "true"
-      RUN_LIGHTHOUSE: "true"
-      ETH1_ENDPOINT: "http://localhost:8545"
-      EXECUTION_ENDPOINT: "http://localhost:8551"
-      LIGHTHOUSE_GENESIS_STATE_URL: "http://miner-1:8001/eth/v2/debug/beacon/states/0"
-    image: merge-client
+      ETH1_ENDPOINT: "http://el-2:8545"
+      EXECUTION_ENDPOINT: "http://el-2:8551"
+      LIGHTHOUSE_GENESIS_STATE_URL: "http://cl-1:8001/eth/v2/debug/beacon/states/0"
+    image: merge-cl
     depends_on:
-      - bootnode    
-    ports:
-      - "5053:8001"
-      - "8546:8545"
-      - "8552:8551"
+      - bootnode-cl
+      - el-2
     networks:
       priv-eth-net:
 

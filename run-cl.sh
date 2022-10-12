@@ -1,46 +1,9 @@
 #!/bin/bash
 
 if [ "true" == "$RUN_BOOTNODE" ]; then 
-    geth \
-      --nodekeyhex="b0ac22adcad37213c7c565810a50f1772291e7b0ce53fb73e7ec2a3c75bc13b5" \
-      --nodiscover \
-      --ipcdisable \
-      --networkid=${NETWORK_ID} \
-      --netrestrict="172.16.254.0/28"  2>&1 | tee /var/log/geth_bootnode.log &
-    gbpid=$!
-
-    sleep 10
-
     cd /opt/testnet/cl
-    ./bootnode.sh 2>&1 | tee /var/log/lighthouse_bootnode.log &
-    lbpid=$!
-fi
-
-
-if [ "true" == "$RUN_GETH" ]; then 
-    cd /opt/testnet/accounts
-    ./import_keys.sh
-    
-    geth \
-      --bootnodes="${ENODE}" \
-      --allow-insecure-unlock \
-      --http \
-      --http.addr="0.0.0.0" \
-      --http.api="eth,web3,net,admin,personal" \
-      --http.corsdomain="*" \
-      --authrpc.addr="0.0.0.0" \
-      --authrpc.vhosts="*" \
-      --authrpc.jwtsecret="/opt/testnet/build/el/jwtsecret" \
-      --networkid=${NETWORK_ID} \
-      --netrestrict="172.16.254.0/28" \
-      --syncmode=full \
-      --mine \
-      --miner.threads=1 \
-      --miner.etherbase=${ETHERBASE} 2>&1 | tee /var/log/geth.log &
-    gpid=$!
-fi
-
-if [ "true" == "$RUN_LIGHTHOUSE" ]; then 
+    ./bootnode.sh 2>&1 | tee /var/log/lighthouse_bootnode.log
+else
     while [ 1 -eq 1 ]; do
       echo "Waiting on DAG ..."
       sleep 5
@@ -71,10 +34,14 @@ if [ "true" == "$RUN_LIGHTHOUSE" ]; then
         done
     fi
 
+    export JWTSECRET="/opt/testnet/build/cl/jwtsecret"
+    echo -n "$JWT" > $JWTSECRET
+
     ./beacon_node.sh 2>&1 | tee /var/log/lighthouse_bn.log &
     lpid=$!
     ./validator_client.sh 2>&1 | tee /var/log/lighthouse_vc.log &
     vpid=$!
+
+    wait $lpid $vpid
 fi
 
-wait $gpid $lpid $vpid $gbpid $lbpid
