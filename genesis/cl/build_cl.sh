@@ -56,15 +56,13 @@ lcli \
   --testnet-dir $TESTNET_DIR \
   $GENESIS_VALIDATOR_COUNT
 
-cp ../build/el/jwtsecret $JWTSECRET
-
 echo Created genesis state in $TESTNET_DIR
 
 echo "Generating bootnode enr"
 
 lcli \
   generate-bootnode-enr \
-  --ip 172.16.254.10 \
+  --ip $BOOTNODE_IP \
   --udp-port $BOOTNODE_PORT \
   --tcp-port $BOOTNODE_PORT \
   --genesis-fork-version $GENESIS_FORK_VERSION \

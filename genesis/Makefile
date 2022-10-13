@@ -9,7 +9,7 @@ genesis-el:
 	cd el; ./build_el.sh
 
 .PHONY: genesis-cl
-genesis-cl: genesis-el
+genesis-cl:
 	cd cl; ./build_cl.sh
 
 .PHONY: clean
